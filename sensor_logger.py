@@ -1,27 +1,37 @@
 import random
 import datetime
-import time .
-
+import time 
 from datetime import datetime
 import os
 
-with open("sensor_log.csv", "a") as f:
-    if not os.path.exists("sensor_log.csv") or os.path.getsize("sensor_log.csv") == 0:
-        f.write("timestamp,temperature,humidity\n")
+def generate_readings():
+    rand_temp = round(random.uniform(20.00, 35.00), 1)
+    rand_humi = round(random.uniform(30.00, 90.00), 1)
+    return rand_temp, rand_humi
 
-    for i in range(1, 11):
-        rand_temp = round(random.uniform(20.00, 35.00), 1)
-        rand_humi = round(random.uniform(30.00, 90.00), 1)
-        now = datetime.now()
-        current_time = now.strftime("%H:%M:%S")
+def get_time():
+    now = datetime.now()
+    current_time = now.strftime("%H:%M:%S")
+    return current_time
 
-        print (f"current time: {current_time} Temp: {rand_temp} Humidity: {rand_humi}")
+def log_readings():
+    with open("sensor_log.csv", "a") as f:
+        if not os.path.exists("sensor_log.csv") or os.path.getsize("sensor_log.csv") == 0:
+            f.write("timestamp,temperature,humidity\n")
+
+        for i in range(1, 11):
+            rand_temp, rand_humi = generate_readings()
+            current_time = get_time()
+            print (f"current time: {current_time} Temp: {rand_temp} Humidity: {rand_humi}")
 
 
-        if i < 10:
-            time.sleep(1)
-        
-        f.write(f"{current_time}, {rand_temp}, {rand_humi}\n")
+
+            if i < 10:
+                time.sleep(1)
+            
+            f.write(f"{current_time}, {rand_temp}, {rand_humi}\n")
+
+log_readings()
 
 
 
